@@ -1,0 +1,59 @@
+/**
+ * spring 注入形式（Annotation）
+ *No.1:
+ * Autowired是自动注入，自动从spring的上下文找到合适的bean来注入
+ *No.2:
+ * Resource用来指定名称注入
+ *No.3:
+ * Qualifier和Autowired配合使用，指定bean的名称
+ *No.4:
+ * Service，Controller，Repository分别标记类是Service层类，Controller层类，数据存储层的类，spring扫描注解配置时，会标记这些类要生成bean。
+ *No.5:
+ * Component是一种泛指，标记类是组件，spring扫描注解配置时，会标记这些类要生成bean。
+ *----上面的Autowired和Resource是用来修饰字段，构造函数，或者设置方法，并做注入的。而Service，Controller，Repository，Component则是用来修饰类，标记这些类要生成bean。
+ *例如：
+ @Service
+public class CarService {
+@Autowired
+ @Qualifier("carDao")
+private CarDao carDao;
+public void addCar(String car) {
+this.carDao.insertCar(car);
+}
+}
+ *Autowired(（这个注解是属业spring的）默认按类型装配必须存在)注解，同时指定bean的名字增加：@Qualifier("carDao")
+ *Resource(（这个注解属于J2EE的）默认安装名称进行装配，不存在则按类型)注解，这个注解可以指定名字注入：@Resource(name="carDao")
+ */
+
+
+/**
+ *spring 注入形式（Applicationcontext配置）
+ * NO.1：
+ * Set注入---------必须在Applicationcontext.xml 中添加(property)bean配置，然后在action类中对资源添加setter方法注入
+ <!--配置bean,配置后该类由spring管理-->
+ <bean name="springAction" class="com.bless.springdemo.action.SpringAction">
+ <!--(1)依赖注入,配置当前类中相应的属性-->
+ <property name="springDao" ref="springDao"></property> </bean>
+ <bean name="springDao" class="com.bless.springdemo.dao.impl.SpringDaoImpl"></bean>
+ *
+ * NO.2:
+ * 构造器注入------必须在Applicationcontext.xml中添加（constructor-arg）bean配置，然后在action类中对资源通过带参数的构造方法进行注入
+ <!--配置bean,配置后该类由spring管理-->
+ <bean name="springAction" class="com.bless.springdemo.action.SpringAction">
+ <!--(2)创建构造器注入,如果主类有带参的构造方法则需添加此配置-->
+ <constructor-arg ref="springDao"></constructor-arg>
+ <constructor-arg ref="user"></constructor-arg> </bean>
+ <bean name="springDao" class="com.bless.springdemo.dao.impl.SpringDaoImpl"></bean>
+ <bean name="user" class="com.bless.springdemo.vo.User"></bean>
+ *
+ * NO.3:
+ * 静态工厂的方法注入--必须在Applicationcontext.xml 中配置工厂类，调用静态工厂的方法来获取自己需要的对象
+ * 还有实例工程方法注入，则需要在Applicationcontext.xml中添加工厂的bean配置（DaoFactory）
+  <!--配置bean,配置后该类由spring管理-->
+ <bean name="springAction" class="com.bless.springdemo.action.SpringAction" >
+ <!--(3)使用静态工厂的方法注入对象,对应下面的配置文件(3)-->
+ <property name="staticFactoryDao" ref="staticFactoryDao"></property> </property> </bean>
+ <!--(3)此处获取对象的方式是从工厂类中获取静态方法-->
+ <bean name="staticFactoryDao" class="com.bless.springdemo.factory.DaoFactory" factory-method="getStaticFactoryDaoImpl">
+ <constructor-arg ref="logic"></constructor-arg> </bean>
+ */
