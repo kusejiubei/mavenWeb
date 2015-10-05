@@ -30,7 +30,7 @@ public class LoginController {
         if (userEntity != null && userEntity.getPassword().equals(password)) {
             mv = new ModelAndView("/index/index", "command", "LOGIN SUCCESS, 込込込��" + username);
         } else if (userEntity != null && !userEntity.getPassword().equals(password)) {
-            mv = new ModelAndView("/index/index", "command", "PASSWORD ERROR!込込込込");
+            mv = new ModelAndView("/index/index", "command", "PASSWORD ERROR!込込込");
         } else {
             mv = new ModelAndView("/index/index", "command", "USERNAME ERROR!込込込");
         }
