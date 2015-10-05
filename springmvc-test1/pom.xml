@@ -147,7 +147,7 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
-        <!--增减自动发布插件-->
+        <!--增加自动发布插件-->
         <plugin>
           <groupId>org.codehaus.cargo</groupId>
           <artifactId>cargo-maven2-plugin</artifactId>
@@ -164,9 +164,11 @@
           </configuration>
           <executions>
             <execution>
-              <id>tomcat-deploy</id>
-              <phase>package</phase>
-              <goals><goal>deploy</goal></goals>
+               <id>cargo-run</id>
+               <phase>install</phase>
+               <goals>
+                    <goal>run</goal>
+               </goals>
             </execution>
           </executions>
         </plugin>
