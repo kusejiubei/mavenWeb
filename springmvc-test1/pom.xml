@@ -147,6 +147,29 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
+        <!--增减自动发布插件-->
+        <plugin>
+          <groupId>org.codehaus.cargo</groupId>
+          <artifactId>cargo-maven2-plugin</artifactId>
+          <version>1.4.9</version>
+          <configuration>
+            <container>
+              <containerId>tomcat7x</containerId>
+              <home>E:/soft/apache/apache-tomcat-7.0.53</home>
+            </container>
+            <configuration>
+              <type>existing</type>
+              <home>E:/soft/apache/apache-tomcat-7.0.53</home>
+            </configuration>
+          </configuration>
+          <executions>
+            <execution>
+              <id>tomcat-deploy</id>
+              <phase>package</phase>
+              <goals><goal>deploy</goal></goals>
+            </execution>
+          </executions>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
