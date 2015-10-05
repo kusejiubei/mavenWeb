@@ -10,6 +10,17 @@
   <properties>
     <spring.version>3.0.5.RELEASE</spring.version>
     <hibernate.version>3.6.10.Final</hibernate.version>
+    <!-- 跟Cargo发布项目相关-->
+    <myproject.name>mtest</myproject.name>
+    <cargo.project.groupid>${project.groupId}</cargo.project.groupid>
+    <cargo.project.artifactid>cargosample-webapp</cargo.project.artifactid>
+    <!--可单独提取并配置到profiles文件来激活 -->
+    <catalina.home>E:/soft/apache/apache-tomcat-7.0.53</catalina.home><!--D:\hudson_ci\hudson_dep_tools\Tomcat6.0-->
+    <cargo.tomcat.manager.hostname>127.0.0.1</cargo.tomcat.manager.hostname>
+    <cargo.tomcat.manager.port>8080</cargo.tomcat.manager.port>
+    <cargo.tomcat.manager.ajp.port>8009</cargo.tomcat.manager.ajp.port>
+    <cargo.tomcat.manager.username>admin</cargo.tomcat.manager.username>
+    <cargo.tomcat.manager.password>password</cargo.tomcat.manager.password>
   </properties>
   <dependencies>
     <dependency>
@@ -147,31 +158,7 @@
             <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
-        <!--增加自动发布插件-->
-        <plugin>
-          <groupId>org.codehaus.cargo</groupId>
-          <artifactId>cargo-maven2-plugin</artifactId>
-          <version>1.4.9</version>
-          <configuration>
-            <container>
-              <containerId>tomcat7x</containerId>
-              <home>E:/soft/apache/apache-tomcat-7.0.53</home>
-            </container>
-            <configuration>
-              <type>existing</type>
-              <home>E:/soft/apache/apache-tomcat-7.0.53</home>
-            </configuration>
-          </configuration>
-          <executions>
-            <execution>
-               <id>cargo-run</id>
-               <phase>install</phase>
-               <goals>
-                    <goal>run</goal>
-               </goals>
-            </execution>
-          </executions>
-        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
@@ -188,6 +175,87 @@
             <packagingExcludes>WEB-INF/web.xml</packagingExcludes>
           </configuration>
         </plugin>
+
+        <!--增加自动发布插件&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& 急急急-->
+        <plugin>
+          <groupId>org.codehaus.cargo</groupId>
+          <artifactId>cargo-maven2-plugin</artifactId>
+          <version>1.4.9</version>
+
+          <configuration>
+            <container>
+              <containerId>tomcat7x</containerId>
+              <type>installed</type><!-- 本地已安装Tomcat时设置 -->
+              <home>${catalina.home}</home><!--本地Tomcat安装目录 -->
+            </container>
+
+            <configuration>
+              <type>existing</type>
+              <home>${catalina.home}</home>
+              <properties>
+                <cargo.tomcat.manager.url>
+                  http://localhost:8080/manager/html
+                </cargo.tomcat.manager.url>
+                <cargo.remote.username>${cargo.tomcat.manager.username}</cargo.remote.username>
+                <cargo.remote.password>${cargo.tomcat.manager.password}</cargo.remote.password>
+                <cargo.tomcat.ajp.port>${cargo.tomcat.manager.ajp.port}</cargo.tomcat.ajp.port> <!-- ajp端口,默认8009 -->
+              </properties>
+            </configuration>
+
+            <!-- 准备执行部署 -->
+            <deployer>
+              <!-- 类型设置必须跟容器一致 -->
+              <type>installed</type>
+              <deployables>
+                <!--在deployable中指定你要部署的webapp -->
+                <deployable>
+                  <groupId>${cargo.project.groupid}</groupId>
+                  <artifactId>${cargo.project.artifactid}</artifactId>
+                  <type>war</type>
+                  <!--如果你想重新定义Web应用的名称时设置,大多数情况下你都会定义此属性-->
+                  <properties>
+                    <context>${myproject.name}</context>
+                  </properties>
+                </deployable>
+              </deployables>
+            </deployer>
+
+          </configuration>
+
+          <!--运行构建的各个阶段时定义需执行的目标,每个阶段可执行多个目标 -->
+          <executions>
+            <execution>
+              <id>init-container</id><!--初始化容器时先关闭,避免JVM端口被绑定-->
+              <phase>validate</phase>
+              <goals><goal>stop</goal></goals>
+            </execution>
+            <!--如下的两个阶段主要用于集成测试，如果你只是部署到环境可以忽略它们 -->
+            <execution>
+              <id>start-container</id>
+              <phase>pre-integration-test</phase>
+              <goals><goal>deployer-deploy</goal><!--等同于deploy,本地不支持redeploy  --></goals>
+            </execution>
+            <execution>
+              <id>stop-container</id>
+              <phase>post-integration-test</phase>
+              <goals><goal>deployer-undeploy</goal><!--等同于undeploy,本地不支持redeploy  --></goals>
+            </execution>
+            <execution><!-- 通过"install"目标部署到容器并运行-->
+              <id>verify-deploy</id>
+              <phase>install</phase>
+              <goals><goal>deployer-deploy</goal><goal>start</goal>
+              </goals>
+            </execution>
+            <execution><!--通过"pre-clean"目标取消部署并关闭容器-->
+              <id>clean-undeploy</id>
+              <phase>pre-clean</phase>
+              <goals><goal>deployer-undeploy</goal><goal>stop</goal>
+              </goals>
+            </execution>
+          </executions>
+
+        </plugin>
+
       </plugins>
     </pluginManagement>
     <resources>
