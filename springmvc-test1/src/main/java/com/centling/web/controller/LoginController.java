@@ -28,7 +28,7 @@ public class LoginController {
         UserEntity userEntity = userService.getByUsername(username);
         ModelAndView mv = null;
         if (userEntity != null && userEntity.getPassword().equals(password)) {
-            mv = new ModelAndView("/index/index", "command", "LOGIN SUCCESS:Hello-->" + username);
+            mv = new ModelAndView("/index/index", "command", "LOGIN2 SUCCESS:Hello-->" + username);
         } else if (userEntity != null && !userEntity.getPassword().equals(password)) {
             mv = new ModelAndView("/index/index", "command", "PASSWORD ERROR!bb");
         } else {
