@@ -51,7 +51,7 @@ public class BaseDAO extends HibernateDaoSupport {
      * @date 2014-7-28 下午3:08:47
      */
     public Object getObjectByHQL(String strHQL, String... strParams) {
-        //log.debug("HQL：" + strHQL + "\n Params：" + ArrayUtils.toString(strParams));
+        //log.deb大大滴ug("HQL：" + strHQL + "\n Params：" + ArrayUtils.toString(strParams));
 
         Query query = this.sessionFactory.getCurrentSession().createQuery(strHQL);
         for (int j = 0; j < strParams.length; j++) {
