@@ -12,7 +12,7 @@
     <hibernate.version>3.6.10.Final</hibernate.version>
     <!-- 跟Cargo发布项目相关-->
     <!--可单独提取并配置到profiles文件来激活 -->
-    <catalina.home>E:/softJM/apache-tomcat-7.0.47</catalina.home><!--D:\hudson_ci\hudson_dep_tools\Tomcat6.0-->
+    <catalina.home>G:/softJM/apache-tomcat-7.0.47</catalina.home><!--D:\hudson_ci\hudson_dep_tools\Tomcat6.0-->
     <cargo.tomcat.manager.hostname>127.0.0.1</cargo.tomcat.manager.hostname>
     <cargo.tomcat.manager.port>8080</cargo.tomcat.manager.port>
     <cargo.tomcat.manager.ajp.port>8009</cargo.tomcat.manager.ajp.port>
