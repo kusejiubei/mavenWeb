@@ -26,7 +26,23 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
+    <!-- ±àÂë UTF-8 -->
+    <filter>
+        <filter-name>SpringMVC-Memcached-Encoding</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SpringMVC-Memcached-Encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet-mapping>
         <servlet-name>spring-servlet</servlet-name>
         <url-pattern>/</url-pattern>
@@ -36,5 +52,18 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/jsp/error/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/jsp/error/500.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>502</error-code>
+        <location>/WEB-INF/jsp/error/502.jsp</location>
+    </error-page>
     <display-name>Archetype Created Web Application</display-name>
 </web-app>

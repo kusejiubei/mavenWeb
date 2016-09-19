@@ -6,9 +6,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>登陆状态</title>
+    <title>页面跳转测试</title>
 </head>
-<body>x`
-${command}
+<body>
+<hr/>
+ <h1>Hello World</h1>
+ 这是我得到的数据：{name=${name} AND code=${code}}
 </body>
 </html>

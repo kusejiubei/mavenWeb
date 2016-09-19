@@ -21,7 +21,7 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/test"/>
         <property name="username" value="root"/>
-        <property name="password" value="123456"/>
+        <property name="password" value="root"/>
     </bean>
 
     <bean id="sessionFactory"
@@ -38,14 +38,28 @@
             <props>
                 <!-- 指定数据库方言 -->
                 <prop key="hibernate.dialect">
-                    org.hibernate.dialect.MySQLInnoDBDialect
+                    org.hibernate.dialect.MySQLDialect
                 </prop>
-                <!-- 是否根据需要每次自动创建数据库 -->
+                <!-- 是否根据需要每次自动创建数据库update -->
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
                 <!-- 显示Hibernate持久化操作所生成的SQL -->
                 <prop key="hibernate.show_sql">true</prop>
                 <!-- 将SQL脚本进行格式化后再输出 -->
                 <prop key="hibernate.format_sql">true</prop>
+                <!--连接池的最小连接数 -->
+                <prop key="hibernate.c3p0.min_size">15</prop>
+                <!--最大连接数 -->
+                <prop key="hibernate.c3p0.max_size">1000</prop>
+                <!--连接超时时间 -->
+                <prop key="hibernate.c3p0.timeout">180</prop>
+                <!--statemnets缓存大小 -->
+                <prop key="hibernate.c3p0.max_statements">1000</prop>
+                <!--每隔多少秒检测连接是否可正常使用 -->
+                <prop key="hibernate.c3p0.idle_test_period">1200 </prop>
+                <!--当池中的连接耗尽的时候，一次性增加的连接数量,默认为3 -->
+                <prop key="hibernate.c3p0.acquire_increment">10</prop>
+                <!-- 每次都验证连接是否可用 -->
+                <prop key="hibernate.c3p0.validate">false</prop>
             </props>
         </property>
     </bean>

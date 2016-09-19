@@ -6,9 +6,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>登陆状态</title>
+    <title>error</title>
 </head>
-<body>x`
-${command}
+<body>
+<hr/>
+ <h1>Hello World</h1>
+ <h2>505</h2>
 </body>
 </html>
